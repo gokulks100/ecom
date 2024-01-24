@@ -32,7 +32,7 @@ class AdminLoginController extends Controller
 
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password,'is_active'=>1], $request->get('remember'))) {
             // $request->session()->regenerate();
-            return redirect()->intended('/admin/dashboard');
+            return redirect()->intended('/admin/products');
 
         }
 
