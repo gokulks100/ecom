@@ -27,12 +27,6 @@ class ProductController extends Controller
             ->editColumn('price', function ($data) {
                 return "$" . $data->price;
             })
-            ->addColumn('action', function () {
-                return $this->getActions('service_management');
-            })
-            // ->editColumn('updated_by', function ($data) {
-            //     return Admin::where("id", $data->updated_by)->first()->name ?? "";
-            // })
             ->make(true);
     }
 

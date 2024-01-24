@@ -114,18 +114,18 @@
     @php
 
         $user = \Auth::guard('admin')->user();
-        $role = App\Models\Role::where('id', $user->role_id)->first();
+        // $role = App\Models\Role::where('id', $user->role_id)->first();
 
     @endphp
 
     <div id="app">
         <div class="container-scroller">
             <!--nav bar -->
-            @include('layouts.admin.nav')
+            @include('admin.layouts.admin.nav')
             <!-- partial -->
             <div class="container-fluid page-body-wrapper">
                 <!-- partial:partials/_sidebar.html -->
-                @include('layouts.admin.sidebar')
+                @include('admin.layouts.admin.sidebar')
                 <!-- partial -->
                 <div class="main-panel">
                     <div class="content-wrapper">
@@ -133,7 +133,7 @@
                         @yield('content')
                     </div>
                     {{-- footer  --}}
-                    @include('layouts.admin.footer')
+                    @include('admin.layouts.admin.footer')
                 </div>
             </div>
         </div>

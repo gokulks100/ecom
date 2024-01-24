@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AdminLoginController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -19,6 +21,24 @@ Route::group(['middleware' => ['adminauth', 'auth:admin']], function () {
         Route::get('/{id}', [ProductController::class, 'getServiceById'])->name('service.get');
         Route::delete('/{id}', [ProductController::class, 'delete'])->name('service.delete');
     });
+
+    Route::group(['prefix'=>'category'],function(){
+        Route::get('/',[CategoryController::class,'index'])->name('category');
+    });
+    
+    Route::group(['prefix'=>'stocks'],function(){
+        Route::get('/',[StockController::class,'index'])->name('stocks');
+    });
+
+    Route::group(['prefix'=>'carts'],function(){
+        Route::get('/',[StockController::class,'index'])->name('stocks');
+    });
+
+
+    Route::get('/stocks',[CategoryController::class,'stocks'])->name('stocks');
+    Route::get('/carts',[CategoryController::class,'carts'])->name('carts');
+    
+    
 
 });
 
