@@ -1,0 +1,1 @@
+$(document).ready(function () { $('#historyMenu').addClass('active-menu'); });

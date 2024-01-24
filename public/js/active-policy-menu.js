@@ -1,0 +1,1 @@
+$(document).ready(function () { $('#policyMenu').addClass('current-menu'); });

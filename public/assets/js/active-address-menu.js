@@ -1,0 +1,1 @@
+$(document).ready(function () { $('#addressMenu').addClass('active-menu'); });
