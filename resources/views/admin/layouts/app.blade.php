@@ -5,12 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="shortcut icon" href="{{ asset('images/svg/favicon.svg') }}" />
-
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }} - @yield('title')</title>
+    <title>Ecom - @yield('title')</title>
 
 
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
@@ -121,11 +119,11 @@
     <div id="app">
         <div class="container-scroller">
             <!--nav bar -->
-            @include('admin.layouts.admin.nav')
+            @include('admin.layouts.nav')
             <!-- partial -->
             <div class="container-fluid page-body-wrapper">
                 <!-- partial:partials/_sidebar.html -->
-                @include('admin.layouts.admin.sidebar')
+                @include('admin.layouts.sidebar')
                 <!-- partial -->
                 <div class="main-panel">
                     <div class="content-wrapper">
@@ -133,7 +131,7 @@
                         @yield('content')
                     </div>
                     {{-- footer  --}}
-                    @include('admin.layouts.admin.footer')
+                    @include('admin.layouts.footer')
                 </div>
             </div>
         </div>

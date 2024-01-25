@@ -15,17 +15,16 @@ Route::group(['middleware' => ['adminauth', 'auth:admin']], function () {
 
     Route::group(['prefix' => 'products'], function () {
         Route::get('/', [ProductController::class, 'index'])->name('products');
-        Route::get('getData', [ProductController::class, 'getData'])->name('service.getData');
-        Route::post('/', [ProductController::class, 'addService'])->name('service.add');
-        Route::post('change-status', [ProductController::class, 'changeStatus'])->name('service.statuschange');
-        Route::get('/{id}', [ProductController::class, 'getServiceById'])->name('service.get');
-        Route::delete('/{id}', [ProductController::class, 'delete'])->name('service.delete');
+        Route::get('getData', [ProductController::class, 'getData'])->name('product.getData');
+        Route::post('/', [ProductController::class, 'addProduct'])->name('product.add');
+        Route::get('/{id}', [ProductController::class, 'getProductById'])->name('product.get');
+        Route::delete('/{id}', [ProductController::class, 'delete'])->name('product.delete');
     });
 
     Route::group(['prefix'=>'category'],function(){
         Route::get('/',[CategoryController::class,'index'])->name('category');
     });
-    
+
     Route::group(['prefix'=>'stocks'],function(){
         Route::get('/',[StockController::class,'index'])->name('stocks');
     });
@@ -37,8 +36,8 @@ Route::group(['middleware' => ['adminauth', 'auth:admin']], function () {
 
     Route::get('/stocks',[CategoryController::class,'stocks'])->name('stocks');
     Route::get('/carts',[CategoryController::class,'carts'])->name('carts');
-    
-    
+
+
 
 });
 

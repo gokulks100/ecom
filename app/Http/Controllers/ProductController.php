@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
+use App\Models\Media;
 use App\Models\Product;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
@@ -24,23 +31,23 @@ class ProductController extends Controller
             ->editColumn('updated_at', function ($data) {
                 return  Carbon::parse($data->updated_at)->format("Y-m-d H:i:s");
             })
-            ->editColumn('price', function ($data) {
-                return "$" . $data->price;
+            ->editColumn('created_at', function ($data) {
+                return  Carbon::parse($data->created_at)->format("Y-m-d H:i:s");
+            })
+            ->addColumn('category',function($data){
+                return "category";
             })
             ->make(true);
     }
 
-    public function addService(Request $request)
+    public function addProduct(Request $request)
     {
         // $url = $this->upload("aws", $request->image, '/services');
-
         $validate = Validator::make($request->all(), [
             'name' => 'required',
             'price' => 'required',
-            'tax' => 'required',
-            'max_members' => 'required',
-            'min_members' => 'required',
-            'image' => (!isset($request->id)) ? "required|mimes:jpg,jpeg,png" : "",
+            'category' => 'required',
+            'images' => (!isset($request->id)) ? "required" : "",
             'description' => 'required'
         ]);
 
@@ -50,7 +57,7 @@ class ProductController extends Controller
 
         DB::beginTransaction();
         try {
-            $service =   Service::updateOrCreate(
+            $product =   Product::updateOrCreate(
                 [
                     'id' => $request->id  ?? null
 
@@ -59,38 +66,39 @@ class ProductController extends Controller
                     'name' => $request->name,
                     'description' => $request->description,
                     'price' => $request->price,
-                    'tax' => $request->tax,
-                    'min_members' => $request->min_members,
-                    'max_members' => $request->max_members,
-                    'created_by' => Auth::guard('admin')->user()->id,
-                    'updated_by' => Auth::guard('admin')->user()->id,
-                    'wheel_taxi' => (isset($request->wheel_taxi)) ? 1 : 0
+                    'category_id' => $request->category,
+                    'user_id' => Auth::guard('admin')->user()->id
                 ]
             );
 
-            if (isset($request->image) && $request->file('image')) {
-                // $img_name = $request->image->getClientOriginalName();
-                // $url = $this->upload("aws", $request->image, '/services');
-                // $imgname = Helper::imagePathUrl("AWS", $request->image, "/users");
-                $img_name = 'services/' . $request->image->getClientOriginalName();
-                $this->storePublicFile($img_name, $request->image);
-                $url = $this->openPublicFile($img_name);
+            foreach($request->images as $image)
+            {
 
+                $filename = $image->getClientOriginalName();
+                $image->move(public_path('images'), $filename);
                 Media::updateOrCreate(
                     [
-                        'model_id' => $service->id
+                        'model_id' => $product->id
                     ],
                     [
-                        'name' => $img_name,
-                        'url' => $url,
-                        'model_type' => Service::class,
+                        'name' => $filename,
+                        'url' => $filename,
+                        'model_type' => Product::class,
                     ]
                 );
             }
+
+            // if (isset($request->images) && $request->file('images')) {
+                // $img_name = $request->image->getClientOriginalName();
+                // $url = $this->upload("aws", $request->image, '/services');
+                // $imgname = Helper::imagePathUrl("AWS", $request->image, "/users");
+
+            // }
             DB::commit();
-            $message  = (isset($request->id)) ? "Service Updated" : "Service Added";
+            $message  = (isset($request->id)) ? "Product Updated" : "Product Added";
             return response()->json(['success' => true, 'message' => $message]);
         } catch (Exception $e) {
+            dd($e);
             DB::rollback();
             Log::debug($e);
             return  response()->json(['success' => false, 'message' => $e->getMessage()]);
@@ -98,9 +106,9 @@ class ProductController extends Controller
     }
 
 
-    public function getServiceById($id)
+    public function getProductById($id)
     {
-        return Service::with(['image'])->where('id', $id)->first();
+        return Product::with(['images'])->where('id', $id)->first();
     }
 
     public function delete($id)

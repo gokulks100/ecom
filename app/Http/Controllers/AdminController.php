@@ -26,7 +26,7 @@ class AdminController extends Controller
             ]
         )->leftJoin('privilage_master', 'role_privilege_mapping.fk_privilege_id', 'privilage_master.id')
             ->where('privilage_master.is_active', 1)->where('role_privilege_mapping.fk_role_id', Auth::user()->role_id)
-            ->groupBy('privilage_master.title')->get();
+            ->groupBy('privilage_master.title')->orderBy('privilage_master.id','ASC')->get();
 
         config()->set('database.connections.mysql.strict', true);
         DB::reconnect();

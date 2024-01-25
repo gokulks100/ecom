@@ -33,8 +33,6 @@ return new class extends Migration
 
             ['privilege' => 'Category', 'key' => 'category', 'value' => 'category', 'icon' => 'mdi-crosshairs-gps menu-icon', 'title' => 'Product Management', 'route_action' =>  json_encode(['read', 'create', 'edit', 'delete']), 'is_enabled' => 1],
 
-            // ['privilege' => 'Category', 'key' => 'category', 'value' => 'category', 'icon' => 'mdi-crosshairs-gps menu-icon', 'title' => 'Product Management', 'route_action' =>  json_encode(['read', 'create', 'edit', 'delete', 'change_password']), 'is_enabled' => 1],
-
             ['privilege' => 'Products', 'key' => 'products', 'value' => 'products', 'icon' => 'mdi-search-web menu-icon', 'title' => 'Product Management', 'route_action' =>  json_encode(['read', 'create', 'edit', 'delete', 'change_password']), 'is_enabled' => 1],
 
             ['privilege' => 'Stock Listing', 'key' => 'stocks', 'value' => 'stocks', 'icon' => 'mdi-search-web menu-icon', 'title' => 'Stocks Listing', 'route_action' =>  json_encode(['read', 'create', 'edit', 'delete', 'change_password']), 'is_enabled' => 1],

@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('media', function (Blueprint $table) {
             $table->id();
-            $table->string('file_name');
+            $table->string('name');
+            $table->string('url');
+            $table->morphs('model');
             $table->timestamps();
             $table->softDeletes();
         });
