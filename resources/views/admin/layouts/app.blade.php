@@ -59,6 +59,10 @@
     <!-- Scripts -->
     {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
 
+    {{-- select 2 --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <style>
         tfoot {
             display: table-header-group;
@@ -87,20 +91,236 @@
         }
 
         input:checked {
-            background-color: #edcb00  !important;
+            background-color: #edcb00 !important;
             border-color: #edcb00 !important;
         }
 
-        .btn-fw{
-            background-color: #edcb00  !important;
+        .btn-fw {
+            background-color: #edcb00 !important;
             border-color: #edcb00 !important;
         }
 
         .btn-fw:hover {
-            background-color: black  !important;
+            background-color: black !important;
             border-color: black !important;
         }
 
+        /* .multiImage {
+            display: block;
+            font-weight: 600;
+            color: #fff;
+            text-align: center;
+            min-width: 116px;
+            padding: 25px 10px;
+            height: 80px;
+            transition: all .3s ease;
+            cursor: pointer;
+            border: 2px dashed #ededed;
+            border-radius: 5px;
+            line-height: 26px;
+            font-size: 14px;
+            margin: 0;
+            width: 100%;
+
+        }
+
+        .multiImage p {
+            font-size: 13px;
+        }
+
+        .multiImageWrapper {
+            display: flex;
+            grid-gap: 15px;
+            margin-bottom: 10px;
+
+
+        }
+
+        .multiImageWrapper .upload__img-wrap {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            grid-gap: 10px;
+            flex-shrink: 0 !important;
+        }
+
+        .multiImageWrapper .upload__img-box {
+            width: 80px;
+            margin-bottom: 0px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+
+        .multiImageWrapper .upload__img-close {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5) url("../images/remove.svg") center no-repeat;
+            background-size: 14px;
+            position: absolute;
+            top: 50%;
+            right: 50%;
+            transform: translate(50%, -50%);
+            text-align: center;
+            line-height: 24px;
+            z-index: 1;
+            cursor: pointer;
+        }
+
+        .upload__img-close:hover {
+            background: red url("../images/remove.svg") center no-repeat;
+            background-size: 14px;
+        }
+
+        .imageInputBoxWrapper {
+            display: flex;
+            //align-items: center;
+            grid-gap: 10px;
+            flex-wrap: wrap;
+
+        }
+
+
+        .imageInputBox p {
+            margin-top: 3px;
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 14px;
+            text-align: center;
+        }
+
+        .imageInputBox .upload__img-box {
+            width: 85px;
+            margin-bottom: 0px;
+            border-radius: 5px;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+
+        .imageInputBox .upload__img-close {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5) url("../images/remove.svg") center no-repeat;
+            background-size: 14px;
+            position: absolute;
+            top: 50%;
+            right: 50%;
+            transform: translate(50%, -50%);
+            text-align: center;
+            line-height: 24px;
+            z-index: 1;
+            cursor: pointer;
+
+        }
+
+        .imageInputBox .upload__img-close:hover {
+            background: red url("../images/remove.svg") center no-repeat;
+            background-size: 14px;
+        }
+
+        .imageInputBoxWrapper .imageInputBox {
+            width: auto;
+            text-align: center;
+
+
+            .img-bg {
+                border-radius: 5px !important;
+            }
+
+        }
+
+        .img-bg {
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            position: relative;
+            padding-bottom: 100%;
+        } */
+
+
+
+        .form-group .multiImage .upload__box {
+            padding: 0px;
+        }
+
+        .form-group .multiImage .upload__inputfile {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+
+        .form-group .multiImage .upload__btn {
+            display: block;
+            font-weight: 600;
+            color: #fff;
+            text-align: center;
+            min-width: 116px;
+            padding: 35px 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px dashed;
+            border-color: #ededed;
+            border-radius: 5px;
+            line-height: 26px;
+            font-size: 14px;
+        }
+
+        .form-group .multiImage .upload__btn p {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #7492A3;
+        }
+
+        .form-group .multiImage .upload__btn:hover {
+            background-color: unset;
+            color: #4045ba;
+            transition: all 0.3s ease;
+        }
+
+        .form-group .multiImage .upload__btn-box {
+            margin-bottom: 20px;
+        }
+
+        .form-group .multiImage .upload__img-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            grid-gap: 10px;
+        }
+
+        .form-group .multiImage .upload__img-box {
+            width: 80px;
+            margin-bottom: 12px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .form-group .multiImage .upload__img-close {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5) url("../images/remove.svg") center no-repeat;
+            background-size: 14px;
+            position: absolute;
+            top: 50%;
+            right: 50%;
+            transform: translate(50%, -50%);
+            text-align: center;
+            line-height: 24px;
+            z-index: 1;
+            cursor: pointer;
+        }
+        .form-group .multiImage .img-bg {
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            position: relative;
+            padding-bottom: 100%;
+        }
     </style>
     @stack('style');
 
@@ -113,7 +333,6 @@
 
         $user = \Auth::guard('admin')->user();
         // $role = App\Models\Role::where('id', $user->role_id)->first();
-
     @endphp
 
     <div id="app">

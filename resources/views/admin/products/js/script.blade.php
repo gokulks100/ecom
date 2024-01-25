@@ -2,6 +2,9 @@
 
 
     $(document).ready(function(){
+
+        $('#category').select2();
+
          $("#addImage").click(function() {
         var lsthmtl = $(".clone").html();
 
@@ -73,7 +76,7 @@
                     $('#productForm').trigger("reset");
                     notify("success", data.message);
                     $('#productTable').DataTable().ajax.reload();
-                    addServiceForm(1);
+                    addProductForm(1);
 
                 } else {
                     notify("warning", data.message);
@@ -114,10 +117,7 @@
                         var i = 1;
                         $.each(output.images, function(key, value) {
                             console.log(value.url);
-                            var image = 'images/'+value.url;
-                            $('#imageDiv').append('<div class="upload__img-box" id="img' + value
-                                .id + '"><div class="img-bg" style="background: url(''); background-size: cover"><div class="upload__img-close" onclick="deleteProductImage(' +
-                                value.id + ')"></div></div></div>');
+                            $('#imageDiv').append(`<div class="upload__img-box" id="img${value.id}"><img src="/images/${value.url}" class="img-bg" style="background-size: cover;"><div class="upload__img-close" onclick="deleteProductImage(${value.id})"></div></div></div>`);
                             i++;
                         });
 

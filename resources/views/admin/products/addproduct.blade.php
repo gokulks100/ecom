@@ -11,15 +11,27 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="max_members">Category<span class="required">*</span></label>
-                    <input type="text" class="form-control" id="category" name="category"
-                        placeholder="Category">
+                    <label for="category">Category<span class="required">*</span></label>
+                    {{-- <input type="text" class="form-control" id="category" name="category"
+                        placeholder="Category"> --}}
+                        <select name="category" class="form-control" id="category">
+                            @foreach ($categories as $category)
+                                <option value="{{  $category->id }}">{{  $category->name  }}</option>
+                            @endforeach
+                            
+                        </select>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="price">Price<span class="required">*</span></label>
                     <input type="text" class="form-control numberValidation" id="price" placeholder="Price" name="price">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="stock">Stock<span class="required">*</span></label>
+                    <input type="text" class="form-control numberValidation" id="stock" placeholder="Stock" name="stock">
                 </div>
             </div>
             <div class="col-md-12">

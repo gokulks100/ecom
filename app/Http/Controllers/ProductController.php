@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Media;
 use App\Models\Product;
 use Carbon\Carbon;
@@ -19,7 +20,9 @@ class ProductController extends Controller
 {
     public function index()
     {
-        return view('admin.products.index');
+        return view('admin.products.index',[
+            'categories' => Category::cursor()
+        ]);
     }
 
     public function getData()
@@ -113,7 +116,7 @@ class ProductController extends Controller
 
     public function delete($id)
     {
-        $data = Service::with(['image'])->where('id', $id)->first();
+        $data = Product::with(['images'])->where('id', $id)->first();
         if (!isset($data)) {
             return response()->json(['success' => false, 'message' => "Service not found!"]);
         }
@@ -124,15 +127,4 @@ class ProductController extends Controller
         return response()->json(['success' => true, 'message' => 'deleted']);
     }
 
-    public function changeStatus(Request $request)
-    {
-        $data = Service::where('id', $request->id)->first();
-        if (!isset($data)) {
-            return response()->json(['success' => false, 'message' => "Service not found!"]);
-        }
-        $data->is_active =  $request->status;
-        $data->save();
-        $message = ($request->status == 1) ? "User Actived" : "User Inactived";
-        return response()->json(['success' => true, 'message' => $message]);
-    }
 }
