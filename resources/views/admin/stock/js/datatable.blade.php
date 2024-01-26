@@ -1,7 +1,7 @@
 <script>
     var datatable;
     $(function() {
-        datatable = $('#categoryTable').DataTable({
+        datatable = $('#stockTable').DataTable({
             pageLength: 10,
             processing: true,
             serverSide: true,
@@ -10,17 +10,14 @@
                 {
                     targets: [5],
                     render: function(data, type, row) {
-                        var editAction =
-                            `<a href="javascript:void(0);" class="btn btn-sm text-primary fa-tip"  title="Edit" onclick="editCategory(${data})" ><i class="fa fa-pen cursor-pointer f-size-14"></i></a>`;
-                        var deleteAction =
-                            `<a href="javascript:void(0);" class="btn btn-sm text-danger fa-tip"  title="Delete" onclick="deleteCategory(${data})"><i class="fa fa-trash cursor-pointer f-size-14"></i></a>`;
-                        return '<div class="d-flex">' + editAction + deleteAction + '</div>';
+                        return`<a href="javascript:void(0);" class="btn btn-sm text-primary fa-tip"  title="Edit" onclick="manageStock(${data},${row.count})" >
+                        <button class="btn btn-success">Manage Stock</button></a>`;
                     },
                 }
             ],
             dom: 'Blrtip',
             ajax: {
-                url: '{{ route('category.getData') }}',
+                url: '{{ route('stock.getData') }}',
                 type: "get",
                 data: function(d) {
 
@@ -40,8 +37,8 @@
                     name: "name"
                 },
                 {
-                    data: 'description',
-                    name: "description"
+                    data: 'count',
+                    name: "count"
                 },
 
                 {

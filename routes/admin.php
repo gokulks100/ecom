@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminLoginController;
+use App\Http\Controllers\CartAdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockController;
@@ -8,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/login', [AdminLoginController::class, 'index']);
-Route::post('/', [AdminLoginController::class, 'login'])->name('admin.login');
+Route::post('/login', [AdminLoginController::class, 'login'])->name('admin.login');
 Route::get('/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
 Route::group(['middleware' => ['adminauth', 'auth:admin']], function () {
@@ -19,23 +20,29 @@ Route::group(['middleware' => ['adminauth', 'auth:admin']], function () {
         Route::post('/', [ProductController::class, 'addProduct'])->name('product.add');
         Route::get('/{id}', [ProductController::class, 'getProductById'])->name('product.get');
         Route::delete('/{id}', [ProductController::class, 'delete'])->name('product.delete');
+        Route::post('/product-image',[ProductController::class,'deleteImage'])->name('product.delete.productimage');
     });
 
     Route::group(['prefix'=>'category'],function(){
         Route::get('/',[CategoryController::class,'index'])->name('category');
+        Route::get('/getData',[CategoryController::class,'getData'])->name('category.getData');
+        Route::post('/',[CategoryController::class,'addCategory'])->name('category.add');
+        Route::get('/{id}',[CategoryController::class,'getCategory'])->name('category.get');
+        Route::delete('/{id}',[CategoryController::class,'deleteCategory'])->name('category.delete');
+
     });
 
     Route::group(['prefix'=>'stocks'],function(){
         Route::get('/',[StockController::class,'index'])->name('stocks');
+        Route::get('/getData',[StockController::class,'getData'])->name('stock.getData');
+        Route::post('/',[StockController::class,'updateStock'])->name('stock.manage');
     });
 
     Route::group(['prefix'=>'carts'],function(){
-        Route::get('/',[StockController::class,'index'])->name('stocks');
+        Route::get('/',[CartAdminController::class,'index'])->name('carts');
+        Route::get('/getData',[CartAdminController::class,'getData'])->name('cartitem.getData');
     });
 
-
-    Route::get('/stocks',[CategoryController::class,'stocks'])->name('stocks');
-    Route::get('/carts',[CategoryController::class,'carts'])->name('carts');
 
 
 

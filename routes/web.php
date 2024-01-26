@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -17,10 +19,17 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/',[HomeController::class,'index'])->name('home');
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::group(['prefix'=>'cart-items'],function(){
+        Route::get('/',[CartController::class,'index'])->name('cartitems');
+        Route::post('/',[CartController::class,'addCart'])->name('addcart');
+        Route::post('/remove-cart',[CartController::class,'deletCartItem'])->name('delete.cartitem');
+    });
+
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

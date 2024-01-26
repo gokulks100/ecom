@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Media;
 use App\Models\Product;
+use App\Models\ProductStock;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -20,14 +21,14 @@ class ProductController extends Controller
 {
     public function index()
     {
-        return view('admin.products.index',[
+        return view('admin.products.index', [
             'categories' => Category::cursor()
         ]);
     }
 
     public function getData()
     {
-        $data = Product::orderBy('id','DESC');
+        $data = Product::orderBy('id', 'DESC');
 
         return DataTables::of($data)
             ->addIndexColumn()
@@ -37,8 +38,8 @@ class ProductController extends Controller
             ->editColumn('created_at', function ($data) {
                 return  Carbon::parse($data->created_at)->format("Y-m-d H:i:s");
             })
-            ->addColumn('category',function($data){
-                return "category";
+            ->addColumn('category', function ($data) {
+                return Category::where('id',$data->category_id)->withTrashed()->first()->name ?? "";
             })
             ->make(true);
     }
@@ -74,34 +75,37 @@ class ProductController extends Controller
                 ]
             );
 
-            foreach($request->images as $image)
-            {
 
-                $filename = $image->getClientOriginalName();
-                $image->move(public_path('images'), $filename);
-                Media::updateOrCreate(
-                    [
-                        'model_id' => $product->id
-                    ],
-                    [
-                        'name' => $filename,
-                        'url' => $filename,
-                        'model_type' => Product::class,
-                    ]
-                );
+            ProductStock::updateOrCreate(
+                [
+                    'product_id' => $product->id
+                ],
+                [
+                    'count' => $request->stock
+                ]
+            );
+
+            if (is_array($request->images)) {
+                foreach ($request->images as $image) {
+
+                    $filename = $image->getClientOriginalName();
+                    $image->move(public_path('images'), $filename);
+                    Media::create(
+                        [
+                            'model_id' => $product->id,
+                            'name' => $filename,
+                            'url' => $filename,
+                            'model_type' => Product::class,
+                        ]
+                    );
+                }
             }
 
-            // if (isset($request->images) && $request->file('images')) {
-                // $img_name = $request->image->getClientOriginalName();
-                // $url = $this->upload("aws", $request->image, '/services');
-                // $imgname = Helper::imagePathUrl("AWS", $request->image, "/users");
 
-            // }
             DB::commit();
             $message  = (isset($request->id)) ? "Product Updated" : "Product Added";
             return response()->json(['success' => true, 'message' => $message]);
         } catch (Exception $e) {
-            dd($e);
             DB::rollback();
             Log::debug($e);
             return  response()->json(['success' => false, 'message' => $e->getMessage()]);
@@ -111,19 +115,30 @@ class ProductController extends Controller
 
     public function getProductById($id)
     {
-        return Product::with(['images'])->where('id', $id)->first();
+        return Product::with(['images', 'stock'])->where('id', $id)->first();
     }
 
     public function delete($id)
     {
         $data = Product::with(['images'])->where('id', $id)->first();
         if (!isset($data)) {
-            return response()->json(['success' => false, 'message' => "Service not found!"]);
+            return response()->json(['success' => false, 'message' => "product not found!"]);
         }
         if (isset($data->image->url)) {
             $this->deleteFile($data->image->url);
         }
         $data->delete();
+        return response()->json(['success' => true, 'message' => 'deleted']);
+    }
+
+    public function deleteImage(Request $request)
+    {
+        $media = Media::where('model_id',$request->id)->first();
+        if(!isset($media))
+        {
+            return response()->json(['success' => false, 'message' => "image not found!"]);
+        }
+        $media->delete();
         return response()->json(['success' => true, 'message' => 'deleted']);
     }
 

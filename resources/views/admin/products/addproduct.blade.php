@@ -14,11 +14,13 @@
                     <label for="category">Category<span class="required">*</span></label>
                     {{-- <input type="text" class="form-control" id="category" name="category"
                         placeholder="Category"> --}}
+
                         <select name="category" class="form-control" id="category">
+                            <option disabled selected>Choose Category</option>
                             @foreach ($categories as $category)
                                 <option value="{{  $category->id }}">{{  $category->name  }}</option>
                             @endforeach
-                            
+
                         </select>
                 </div>
             </div>

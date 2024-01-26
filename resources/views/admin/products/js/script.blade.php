@@ -39,6 +39,8 @@
 
 
     function clearAll() {
+        $('#imageDiv').empty();
+        $("#category").val(null).trigger('change');
         $('#productForm').trigger("reset");
         $('#productButton').html('Add Product');
         $('#id').val('');
@@ -63,12 +65,7 @@
             },
             complete: function() {
                 $('#productButton').attr("disabled", false);
-                if ($("#id").val() != "" || $("#id").val() != null) {
-                    console.log('sd');
-                    $("#productButton").text('Update Product');
-                } else {
-                    $("#productButton").text('Add Product');
-                }
+                $("#productButton").text('Add Product');
             },
             success: function(data) {
                 if (data.success == true) {
@@ -77,8 +74,11 @@
                     notify("success", data.message);
                     $('#productTable').DataTable().ajax.reload();
                     addProductForm(1);
-
                 } else {
+                    if($("#id").val())
+                    {
+                        $("#productButton").text('Update Product');
+                    }
                     notify("warning", data.message);
                 }
             },
@@ -107,17 +107,16 @@
                 $("#back").removeClass('d-none');
                 $('#id').val(output.id);
                 $('#name').val(output.name);
+                $("#stock").val(output.stock.count);
+                $("#category").val(output.category_id).trigger('change');
 
-                console.log(output.images.length);
-
-                console.log('ssssssss');
                 if (output.images.length > 0) {
-                    console.log('ssssssss');
                         $('#imageDiv').empty();
                         var i = 1;
                         $.each(output.images, function(key, value) {
                             console.log(value.url);
-                            $('#imageDiv').append(`<div class="upload__img-box" id="img${value.id}"><img src="/images/${value.url}" class="img-bg" style="background-size: cover;"><div class="upload__img-close" onclick="deleteProductImage(${value.id})"></div></div></div>`);
+                            $('#imageDiv').append(`
+                                <div id="img${output.id}"><img src="/images/${value.url}" class="img-bg" style="background-size: cover;width:200px;"><span class="upload__img-close" onclick="deleteProductImage(${output.id})"></span></div>`);
                             i++;
                         });
 
@@ -178,6 +177,30 @@
                 }
             }
         });
+    }
+
+    function deleteProductImage(id) {
+        $.ajax({
+            url: "{{ route('product.delete.productimage') }}",
+            type: "POST",
+            data: {
+                id: id,
+                _token: "{{ csrf_token() }}"
+            },
+            cache: false,
+            beforeSend: function() {},
+            complete: function() {},
+            success: function(data) {
+                if (data.success == false) {
+                    notify("warning", "data not found!");
+                }
+                $('#img' + id).remove();
+            },
+            error: function(data) {
+                notify('warning', 'try again !');
+            }
+        });
+
     }
 
 </script>

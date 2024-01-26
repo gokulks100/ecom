@@ -6,18 +6,51 @@
         display: none !important;
     }
 
-.mutiPhotoInput{
-        border: 1px solid #ededed;
-        align-items: center;
-/*        padding: 0px 7px ;*/
+    .multiImage .upload__box .upload__img-wrap
+    {
+        display: flex;
+        gap:30px;
     }
 
-.mutiPhotoInput .form-control {
-        border: 0 !important;
-        padding: 14px 20px !important;
-}
-     /* padding-right: px; */
+    .select2-container {
+        width: 400px !important;
+        box-sizing: border-box;
+        display: inline-block;
+        margin: 0;
+        position: relative;
+        vertical-align: middle;
+        margin-top: 23px;
+        margin-left: -69px;
+    }
 
+    .select2-container--open .select2-dropdown--below {
+        width: 400px !important;
+        border-top: none;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        margin-left: 69px;
+        margin-top: -24px;
+    }
+
+    .upload__img-close {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.5) url(../images/remove.svg) center no-repeat;
+        background-size: 14px;
+        position: absolute;
+        transform: translate(50%, -50%);
+        text-align: center;
+        line-height: 24px;
+        z-index: 1;
+        cursor: pointer;
+        margin-top: 24px;
+        margin-left: -149px;
+    }
+    .upload__img-close:hover {
+        background: red url("../images/remove.svg") center no-repeat;
+        background-size: 14px;
+    }
 </style>
 @endpush
 @section('content')

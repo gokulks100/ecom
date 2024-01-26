@@ -17,4 +17,22 @@ class Product extends Model
         return $this->morphMany(Media::class, 'model');
     }
 
+    public function stock()
+    {
+       return $this->hasOne(ProductStock::class,'product_id','id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    protected static function boot()
+	{
+	    parent::boot();
+	    static::deleting(function($deletion) {
+            $deletion->stock()->delete();
+            $deletion->images()->delete();
+	    });
+	}
 }

@@ -1,26 +1,16 @@
 <script>
     var datatable;
     $(function() {
-        datatable = $('#categoryTable').DataTable({
+        datatable = $('#cartTable').DataTable({
             pageLength: 10,
             processing: true,
             serverSide: true,
             responsive: false,
             'columnDefs': [
-                {
-                    targets: [5],
-                    render: function(data, type, row) {
-                        var editAction =
-                            `<a href="javascript:void(0);" class="btn btn-sm text-primary fa-tip"  title="Edit" onclick="editCategory(${data})" ><i class="fa fa-pen cursor-pointer f-size-14"></i></a>`;
-                        var deleteAction =
-                            `<a href="javascript:void(0);" class="btn btn-sm text-danger fa-tip"  title="Delete" onclick="deleteCategory(${data})"><i class="fa fa-trash cursor-pointer f-size-14"></i></a>`;
-                        return '<div class="d-flex">' + editAction + deleteAction + '</div>';
-                    },
-                }
             ],
             dom: 'Blrtip',
             ajax: {
-                url: '{{ route('category.getData') }}',
+                url: '{{ route('cartitem.getData') }}',
                 type: "get",
                 data: function(d) {
 
@@ -40,10 +30,9 @@
                     name: "name"
                 },
                 {
-                    data: 'description',
-                    name: "description"
+                    data:'user_name',
+                    name:'user_name'
                 },
-
                 {
                     data: 'created_at',
                     name: "created_at"
@@ -51,11 +40,6 @@
                 {
                     data: 'updated_at',
                     name: "updated_at"
-                },
-                {
-                    data: 'id',
-                    name: 'id',
-                    orderable:false
                 }
             ],
             "initComplete": function() {

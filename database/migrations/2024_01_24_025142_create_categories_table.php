@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -21,11 +22,11 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        DB::table('categories')->insert([
+        Category::create([
             ['name' => 'Cloths','description' => '','is_active' => 1],
             ['name' => 'Kids','description' => '','is_active' => 1,],
             ['name' => 'Pants','description' => '','is_active' => 1,],
-         ]);
+        ]);
 
     }
 
